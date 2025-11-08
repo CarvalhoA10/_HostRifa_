@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.host.hostRifas.helpers.requests.RaffleRequest;
+import com.host.hostRifas.services.raffle.RaffleService;
 
 @RestController
 @RequestMapping("raffle")
@@ -30,12 +33,14 @@ public class RaffleController {
     @Value("${upload.dir:uploads}")
     private String uploadDir;
 
-    public RaffleController(){
+    private RaffleService raffleService;
 
+    public RaffleController(RaffleService raffleService){
+        this.raffleService = raffleService;
     }
     
     @PostMapping("create")
-    public ResponseEntity<String> createRaffle(@RequestPart("raffle") RaffleRequest request, @RequestPart("raffleImage") MultipartFile raffleImage, @RequestPart("prizeImage") MultipartFile prizeImage) throws IOException{
+    public ResponseEntity<String> createRaffle(@RequestPart("raffle") RaffleRequest request, @RequestPart("raffleImage") MultipartFile raffleImage, @RequestPart("prizeImage") MultipartFile prizeImage, @AuthenticationPrincipal UserDetails userDetails) throws IOException{
         
         Files.createDirectories(Paths.get(uploadDir));
 
@@ -52,6 +57,9 @@ public class RaffleController {
         request.setPrizeImagePath(prizeImagePath.toString());
 
         // Falta implementar os metodo de service para salvar no banco de dados
+        String username = userDetails.getUsername();
+
+        this.raffleService.insertRaffle(request, username, raffleImagePath.toString(), prizeImagePath.toString());
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Criado com sucesso");
     }

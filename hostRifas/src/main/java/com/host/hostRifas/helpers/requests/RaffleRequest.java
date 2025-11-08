@@ -7,6 +7,8 @@ public class RaffleRequest{
     private String raffleImagePath;
     private String prizeImagePath;
     private Float value;
+    private int qtdNumbers;
+
     public String getName() {
         return name;
     }
@@ -42,6 +44,12 @@ public class RaffleRequest{
     }
     public void setValue(Float value) {
         this.value = value;
+    }
+    public int getQtdNumbers() {
+        return qtdNumbers;
+    }
+    public void setQtdNumbers(int qtdNumbers) {
+        this.qtdNumbers = qtdNumbers;
     }
 
     
