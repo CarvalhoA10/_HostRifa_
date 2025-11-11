@@ -1,6 +1,8 @@
 package com.host.hostRifas.services.raffle;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,16 @@ public class RaffleService {
         this.iRaffleRepository = iRaffleRepository;
         this.iNumberRepository = iNumberRepository;
         this.iUserRepository = iUserRepository;
+    }
+
+    public List<RaffleResponse> allRaffle(){
+        List<RaffleModel> models = this.iRaffleRepository.findAll();
+        List<RaffleResponse> responses = new ArrayList<>();
+        for(RaffleModel model : models){
+            responses.add(RaffleAdapter.toResponse(model));
+        }
+
+        return responses;
     }
 
     public RaffleResponse insertRaffle(RaffleRequest request, String username, String pathRaffle, String pathPrizze){

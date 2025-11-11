@@ -24,15 +24,35 @@ public class UserService {
     }
 
     public UserResponse getById(Long id){
-        return UserAdapter.toUserResponse(this.iUserRepository.findById(id).get());
+        if(id == null) return null;
+
+        UserModel model = this.iUserRepository.findById(id).get();
+        if(model == null){
+            return null;
+        }
+        return UserAdapter.toUserResponse(model);
     }
 
     public UserResponse getByUsername(String username){
+
+        UserModel model = this.iUserRepository.findByUsername(username);
+
+        if(model == null){
+            return null;
+        }
+
         return UserAdapter.toUserResponse(this.iUserRepository.findByUsername(username));
     }
 
     public UserResponse getByEmail(String email){
-        return UserAdapter.toUserResponse(this.iUserRepository.findByEmail(email));
+
+        UserModel model = this.iUserRepository.findByEmail(email);
+
+        if(model == null){
+            return null;
+        }
+
+        return UserAdapter.toUserResponse(model);
     }
 
     public List<UserResponse> getAll(){
@@ -71,6 +91,8 @@ public class UserService {
 
     public UserResponse create(UserRequest request){
 
+        System.out.println(request.email());
+
         UserResponse response = new UserResponse();
 
         if(this.checkIfExistsByEmail(request.email())){
@@ -84,7 +106,7 @@ public class UserService {
         if(response.error.size() > 0){
             return response;
         }
-        
+
         UserModel model = UserAdapter.toUserModel(request);
 
         model.setActive(false);
@@ -92,15 +114,21 @@ public class UserService {
         model.setPassword(new BCryptPasswordEncoder().encode(model.getPassword()));
         model.setCreatedAt(LocalDateTime.now());
 
-        response = UserAdapter.toUserResponse(this.iUserRepository.save(model));
+        model = this.iUserRepository.save(model);
+        response = UserAdapter.toUserResponse(model);
 
         return response;
 
     }
 
     public boolean delete(Long id){
+        if(id == null) return false;
+        
         UserModel user = this.iUserRepository.findById(id).get();
-        this.iUserRepository.delete(user);
+
+        if(user.getId() != null){
+            this.iUserRepository.delete(user);
+        }
         return true;
     }
     

@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.host.hostRifas.helpers.requests.RaffleRequest;
+import com.host.hostRifas.helpers.responses.RaffleResponse;
 import com.host.hostRifas.services.raffle.RaffleService;
 
 @RestController
@@ -78,6 +80,13 @@ public class RaffleController {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(imagemBytes);
+    }
+
+    @GetMapping("all")
+    public ResponseEntity<List<RaffleResponse>> getAllRaffles(){
+        List<RaffleResponse> responses = this.raffleService.allRaffle();
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
     }
 
 }
