@@ -3,6 +3,8 @@ package com.host.hostRifas.helpers.raffle;
 public enum RaffleStatus {
     approved("aproved"),
     rejected("rejected"),
+    realized("realized"),
+    completed("completed"),
     analyzing("analyzing");
 
     private String status;

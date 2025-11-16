@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -50,6 +51,9 @@ public class RaffleModel {
 
     @OneToMany(mappedBy = "raffle", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<NumberModel> numbers;
+
+    @OneToOne(mappedBy = "raffle", fetch = FetchType.LAZY)
+    private WinnerModel winner;
 
     public Long getId() {
         return id;
@@ -145,6 +149,14 @@ public class RaffleModel {
 
     public void setNumbers(List<NumberModel> numbers) {
         this.numbers = numbers;
+    }
+
+    public WinnerModel getWinner() {
+        return winner;
+    }
+
+    public void setWinner(WinnerModel winner) {
+        this.winner = winner;
     }
 
     

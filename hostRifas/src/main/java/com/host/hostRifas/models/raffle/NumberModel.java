@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,6 +31,10 @@ public class NumberModel {
     private RaffleModel raffle;
     @Column
     private LocalDateTime createdAt;
+
+    @OneToOne(mappedBy = "number", fetch = FetchType.LAZY)
+    private WinnerModel winner;
+
     public Long getId() {
         return id;
     }
@@ -60,5 +65,13 @@ public class NumberModel {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+    public WinnerModel getWinner() {
+        return winner;
+    }
+    public void setWinner(WinnerModel winner) {
+        this.winner = winner;
+    }
 
+
+    
 }

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.host.hostRifas.helpers.user.UserRole;
 import com.host.hostRifas.models.raffle.RaffleModel;
+import com.host.hostRifas.models.raffle.WinnerModel;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,6 +20,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -44,6 +46,9 @@ public class UserModel implements UserDetails{
     private LocalDateTime createdAt;
     @Column
     private LocalDateTime updatedAt;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private WinnerModel winner;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RaffleModel> raffles;
