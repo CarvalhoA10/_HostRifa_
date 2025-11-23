@@ -41,7 +41,7 @@ public class RaffleController {
         this.raffleService = raffleService;
     }
     
-    @PostMapping("create")
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createRaffle(@RequestPart("raffle") RaffleRequest request, @RequestPart("raffleImage") MultipartFile raffleImage, @RequestPart("prizeImage") MultipartFile prizeImage, @AuthenticationPrincipal UserDetails userDetails) throws IOException{
         
         Files.createDirectories(Paths.get(uploadDir));
