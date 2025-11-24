@@ -7,10 +7,12 @@ import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
+import com.host.hostRifas.helpers.adapters.NumberAdapter;
 import com.host.hostRifas.helpers.adapters.RaffleAdapter;
 import com.host.hostRifas.helpers.raffle.NumberStatus;
 import com.host.hostRifas.helpers.raffle.RaffleStatus;
 import com.host.hostRifas.helpers.requests.RaffleRequest;
+import com.host.hostRifas.helpers.responses.NumberResponse;
 import com.host.hostRifas.helpers.responses.RaffleResponse;
 import com.host.hostRifas.models.raffle.NumberModel;
 import com.host.hostRifas.models.raffle.RaffleModel;
@@ -34,6 +36,35 @@ public class RaffleService {
         this.iNumberRepository = iNumberRepository;
         this.iUserRepository = iUserRepository;
         this.iWinnerRepository = iWinnerRepository;
+    }
+
+    public RaffleResponse getById(Long id){
+
+        try{
+            RaffleModel raffle = this.iRaffleRepository.findById(id).get();
+            RaffleResponse response = RaffleAdapter.toResponse(raffle);
+
+            List<NumberModel> numbers = this.iNumberRepository.findByRaffle(raffle);
+            List<NumberResponse> numberResponses = new ArrayList<>();
+            
+            for(NumberModel number : numbers){
+
+                NumberResponse n = NumberAdapter.toResponse(number);
+                numberResponses.add(n);
+
+            }
+
+            response.setNumbers(numberResponses);
+            return response;
+
+        }catch(Exception ex){
+
+            return new RaffleResponse();
+
+        }
+
+        
+
     }
 
     public List<RaffleResponse> allRaffle(){
@@ -68,7 +99,6 @@ public class RaffleService {
     }
 
     public RaffleResponse raffleValidate(Long id, RaffleStatus status){
-
         return new RaffleResponse();
     }
 

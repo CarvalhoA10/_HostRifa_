@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,6 +40,14 @@ public class RaffleController {
 
     public RaffleController(RaffleService raffleService){
         this.raffleService = raffleService;
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<RaffleResponse> rafflePage(@RequestParam(name = "id") Long id){
+
+        RaffleResponse response = this.raffleService.getById(id);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+
     }
     
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

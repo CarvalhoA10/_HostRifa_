@@ -1,5 +1,7 @@
 package com.host.hostRifas.helpers.responses;
 
+import java.util.List;
+
 import com.host.hostRifas.models.user.UserModel;
 
 public class RaffleResponse {
@@ -11,6 +13,7 @@ public class RaffleResponse {
     private Float value;
     private int qtdNumbers;
     private UserModel user;
+    private List<NumberResponse> numbers;
     
     public String getName() {
         return name;
@@ -59,6 +62,12 @@ public class RaffleResponse {
     }
     public void setUser(UserModel user) {
         this.user = user;
+    }
+    public List<NumberResponse> getNumbers() {
+        return numbers;
+    }
+    public void setNumbers(List<NumberResponse> numbers) {
+        this.numbers = numbers;
     }
 
     
