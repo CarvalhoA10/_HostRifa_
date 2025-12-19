@@ -67,7 +67,6 @@ public class RaffleController {
         request.setRaffleImagePath(raffleImagePath.toString());
         request.setPrizeImagePath(prizeImagePath.toString());
 
-        // Falta implementar os metodo de service para salvar no banco de dados
         String username = userDetails.getUsername();
 
         this.raffleService.insertRaffle(request, username, raffleImagePath.toString(), prizeImagePath.toString());
