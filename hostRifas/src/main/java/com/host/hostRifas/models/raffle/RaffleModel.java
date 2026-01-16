@@ -37,6 +37,8 @@ public class RaffleModel {
     @Column(length = 250, nullable = false)
     private String prizeImage;
     @Column
+    private LocalDateTime prizeDate;
+    @Column
     private Double value;
     @Column
     private RaffleStatus status;
@@ -159,6 +161,11 @@ public class RaffleModel {
         this.winner = winner;
     }
 
-    
+    public LocalDateTime getPrizeDate() {
+        return prizeDate;
+    }
 
+    public void setPrizeDate(LocalDateTime prizeDate) {
+        this.prizeDate = prizeDate;
+    }
 }

@@ -4,14 +4,25 @@ import java.time.LocalDateTime;
 
 import com.host.hostRifas.helpers.payment.PaymentStatus;
 import com.host.hostRifas.models.raffle.RaffleModel;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "payment")
 public class PaymentModel {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "raffle_id")
     private RaffleModel raffle;
+    @Column
     private double paymentValue;
+    @Column
     private PaymentStatus status;
+    @Column
     private LocalDateTime paymentDate;
+    @Column
     private String receipt;
 
     public Long getId() {

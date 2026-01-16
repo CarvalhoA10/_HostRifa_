@@ -98,8 +98,14 @@ public class RaffleService {
         return RaffleAdapter.toResponse(model);
     }
 
-    public RaffleResponse raffleValidate(Long id, RaffleStatus status){
-        return new RaffleResponse();
+    public RaffleResponse raffleValidate(Long id, String status){
+
+        RaffleModel model = this.iRaffleRepository.findById(id).get();
+        model.setStatus(RaffleStatus.valueOf(status));
+
+        this.iRaffleRepository.save(model);
+
+        return RaffleAdapter.toResponse(model);
     }
 
 
@@ -129,6 +135,12 @@ public class RaffleService {
 
         iWinnerRepository.save(winner);
 
+        return true;
+    }
+
+    public boolean deleteRaffle(Long raffleId){
+        RaffleModel model = this.iRaffleRepository.findById(raffleId).get();
+        this.iRaffleRepository.delete(model);
         return true;
     }
 

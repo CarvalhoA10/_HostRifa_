@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,12 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.host.hostRifas.helpers.requests.RaffleRequest;
@@ -39,9 +35,11 @@ public class RaffleController {
     private RaffleService raffleService;
 
     public RaffleController(RaffleService raffleService){
+
         this.raffleService = raffleService;
     }
 
+    @Operation(summary = "Retorna a rifa", description = "Responsável por retornar a rifa passando o seu id no path")
     @GetMapping("{id}")
     public ResponseEntity<RaffleResponse> rafflePage(@RequestParam(name = "id") Long id){
 
@@ -49,7 +47,8 @@ public class RaffleController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
 
     }
-    
+
+    @Operation(summary = "Criar nova rifa", description = "Cria uma nova rifa passando os dados necessários")
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createRaffle(@RequestPart("raffle") RaffleRequest request, @RequestPart("raffleImage") MultipartFile raffleImage, @RequestPart("prizeImage") MultipartFile prizeImage, @AuthenticationPrincipal UserDetails userDetails) throws IOException{
         
@@ -74,6 +73,7 @@ public class RaffleController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Criado com sucesso");
     }
 
+    @Operation(summary = "Imagem da rifa", description = "Retorna a imagem da rifa passando seu id no path")
     @GetMapping("/imagem")
     public ResponseEntity<byte[]> getImagem(@RequestParam String path) throws IOException {
         File arquivo = new File(path);
@@ -90,11 +90,28 @@ public class RaffleController {
                 .body(imagemBytes);
     }
 
+    @Operation(summary = "Retorna todas as rifas", description = "Retorna todas as rifas")
     @GetMapping("all")
     public ResponseEntity<List<RaffleResponse>> getAllRaffles(){
         List<RaffleResponse> responses = this.raffleService.allRaffle();
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
+    }
+
+    @Operation(summary = "(admin) Valida a rifa", description = "Necessário para aprovar ou desaprovar rifa na plataforma")
+    @GetMapping("validate/{id}")
+    public ResponseEntity<Boolean> validateRaffle(@RequestParam(name = "status") String status, @PathVariable(name = "id") Long id){
+        this.raffleService.raffleValidate(id, status);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
+    }
+
+    @Operation(summary = "Deletar a rifa", description = "Deleta rifa passando o seu id")
+    @GetMapping("delete/{id}")
+    public ResponseEntity<Boolean> deleteRaffle(@PathVariable(name = "id") Long id){
+
+        this.raffleService.deleteRaffle(id);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
     }
 
 }
