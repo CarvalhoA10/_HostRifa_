@@ -7,5 +7,6 @@ import com.host.hostRifas.models.raffle.RaffleModel;
 
 @Repository
 public interface IRaffleRepository extends JpaRepository<RaffleModel, Long>{
-    
+
+
 }

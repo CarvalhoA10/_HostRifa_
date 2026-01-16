@@ -73,6 +73,18 @@ public class RaffleController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("Criado com sucesso");
     }
 
+    @Operation(summary = "(User )Retorna as rifas criada pelo usuario", description = "retorna todas as rifa do usuario")
+    @GetMapping("myraffles")
+    public ResponseEntity<List<RaffleResponse>> getUserRaffle(@AuthenticationPrincipal UserDetails userDetails){
+
+        String username = userDetails.getUsername();
+
+        List<RaffleResponse> responses = this.raffleService.userRafles(username);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(responses);
+
+    }
+
     @Operation(summary = "Imagem da rifa", description = "Retorna a imagem da rifa passando seu id no path")
     @GetMapping("/imagem")
     public ResponseEntity<byte[]> getImagem(@RequestParam String path) throws IOException {
@@ -105,7 +117,7 @@ public class RaffleController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
     }
 
-    @Operation(summary = "Deletar a rifa", description = "Deleta rifa passando o seu id")
+    @Operation(summary = "(Admin) Deletar a rifa", description = "Deleta rifa passando o seu id")
     @GetMapping("delete/{id}")
     public ResponseEntity<Boolean> deleteRaffle(@PathVariable(name = "id") Long id){
 

@@ -23,6 +23,9 @@ import com.host.hostRifas.repositories.IRaffleRepository;
 import com.host.hostRifas.repositories.IUserRepository;
 import com.host.hostRifas.repositories.IWinnerRepository;
 
+/*
+    Service responsável pela manipulação das rifas
+ */
 @Service
 public class RaffleService {
     
@@ -37,6 +40,10 @@ public class RaffleService {
         this.iUserRepository = iUserRepository;
         this.iWinnerRepository = iWinnerRepository;
     }
+
+    /*
+        Encontra a rifa no banco de dados utilizando o ID que tem que ser do tipo Long
+     */
 
     public RaffleResponse getById(Long id){
 
@@ -63,9 +70,11 @@ public class RaffleService {
 
         }
 
-        
-
     }
+
+    /*
+        Retorna todas as rifas dos usuários do banco de dados
+     */
 
     public List<RaffleResponse> allRaffle(){
         List<RaffleModel> models = this.iRaffleRepository.findAll();
@@ -76,6 +85,29 @@ public class RaffleService {
 
         return responses;
     }
+
+    /*
+        Retorna apenas as rifas criada pelo usuario passado como parametro
+     */
+
+    public List<RaffleResponse> userRafles(String username){
+        UserModel user = this.iUserRepository.findByUsername(username);
+
+        List<RaffleModel> raffles = user.getRaffles();
+        List<RaffleResponse> responses = new ArrayList<>();
+
+
+        for(RaffleModel raffle : raffles){
+            responses.add(RaffleAdapter.toResponse(raffle));
+        }
+
+        return responses;
+
+    }
+
+    /*
+        Metodo responsável por criar uma nova rifa
+     */
 
     public RaffleResponse insertRaffle(RaffleRequest request, String username, String pathRaffle, String pathPrizze){
         RaffleModel model = RaffleAdapter.toModel(request);
@@ -98,6 +130,10 @@ public class RaffleService {
         return RaffleAdapter.toResponse(model);
     }
 
+    /*
+        Metodo de administrador, responsável por verificar e validar se a rifa está apta para aparecer para usuarios do site
+     */
+
     public RaffleResponse raffleValidate(Long id, String status){
 
         RaffleModel model = this.iRaffleRepository.findById(id).get();
@@ -108,6 +144,9 @@ public class RaffleService {
         return RaffleAdapter.toResponse(model);
     }
 
+    /*
+        Metodo responsável por sortiar um numero de uma rifa
+     */
 
     public boolean raffleRealize(Long userId, Long raffleId){
 
@@ -137,6 +176,10 @@ public class RaffleService {
 
         return true;
     }
+
+    /*
+        Metodo para deletar rifas. Apenas administrador pode fazer tal ação
+     */
 
     public boolean deleteRaffle(Long raffleId){
         RaffleModel model = this.iRaffleRepository.findById(raffleId).get();
