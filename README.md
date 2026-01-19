@@ -124,11 +124,13 @@ _HostRifa_/
 
 ## 🛠️ Tecnologias Utilizadas
 
+As tecnologias abaixo são sugestões e podem ser ajustadas conforme o desenvolvimento do projeto:
+
 - **Backend**: Node.js, Express
-- **Frontend**: React/Vue/Angular (a definir)
-- **Banco de Dados**: PostgreSQL/MongoDB (a definir)
+- **Frontend**: React, Vue ou Angular
+- **Banco de Dados**: PostgreSQL ou MongoDB
 - **Autenticação**: JWT
-- **Testes**: Jest/Mocha
+- **Testes**: Jest ou Mocha
 
 ## 📝 Scripts Disponíveis
 
@@ -149,7 +151,7 @@ _HostRifa_/
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está sob a licença MIT.
 
 ## 👥 Autores
 
