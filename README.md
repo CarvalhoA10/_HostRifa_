@@ -2,6 +2,8 @@
 
 Sistema de hospedagem e gerenciamento de rifas online.
 
+> **Nota**: Este projeto está em fase inicial. As instruções abaixo descrevem como o projeto funcionará quando estiver implementado. Se você está começando o desenvolvimento, use este README como guia para estruturar o projeto.
+
 ## 📋 Sobre o Projeto
 
 HostRifa é uma plataforma para criação, gerenciamento e hospedagem de rifas online, facilitando a organização de sorteios e o controle de participantes.
